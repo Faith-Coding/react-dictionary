@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.png";
+import Dictionary from "./Dictionary";
+import { FaGithub, FaCode } from "react-icons/fa";
+import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://github.com/faithomoighe/react-dictionary"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container">
+        <header className="App-header">
+          <img src={logo} className="App-logo img-fluid" alt="logo" />
+        </header>
+        <main>
+          <Dictionary defaultKeyword="ball" />
+        </main>
+        <footer className="app-footer">
+          <FaCode className="coded" />
+          by Akhigbe Faith
+          <a href="https://github.com/faithomoighe/react-dictionary">
+            <FaGithub />
+          </a>
+        </footer>
+      </div>
     </div>
   );
 }

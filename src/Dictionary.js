@@ -1,68 +1,31 @@
 import React, { useState } from "react";
-import Results from "./Results";
-import Photos from "./Photos";
-import axios from "axios";
 import "./Dictionary.css";
+import axios from "axios";
+import Results from "./Results.js";
 
-export default function Dictionary(props) {
-  let [keyword, setKeyword] = useState(props.defaultKeyword);
+export default function Dictionary() {
+  let [keyword, setKeyword] = useState("");
   let [results, setResults] = useState(null);
-  let [loaded, setLoaded] = useState(false);
-  let [photos, setPhotos] = useState(null);
-
-  function handleDictionaryResponse(response) {
-    setResults(response.data[0]);
-  }
 
   function handleResponse(response) {
-    setPhotos(response.data);
+    setResults(response.data);
   }
 
-  function search() {
-    let apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en_US/${keyword}`;
-    axios.get(apiUrl).then(handleDictionaryResponse);
-
-    let sheCodesApiKey = "7b8f40fc3t572a5a95094307o7b10f4a";
-    let sheCodesApiUrl = `https://api.shecodes.io/images/v1/search?query=${keyword}&key=${sheCodesApiKey}`;
-    axios.get(sheCodesApiUrl).then(handleResponse);
-  }
-
-  function handleSubmit(event) {
+  function search(event) {
     event.preventDefault();
-    search();
+    let key = "6b72d3t9e0a187fb46324o57dba90ad0";
+    let apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${key}`;
+    axios.get(apiUrl).then(handleResponse);
   }
-
   function handleKeywordChange(event) {
     setKeyword(event.target.value);
   }
-
-  function load() {
-    setLoaded(true);
-    search();
-  }
-
-  if (loaded) {
-    return (
-      <div className="Dictionary">
-        <section>
-          <h1>what word do you want to search for?</h1>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="search"
-              onChange={handleKeywordChange}
-              defaultValue={props.defaultKeyword}
-              autoComplete="Off"
-            />
-          </form>
-          <div className="hint">Suggested words: ball, toys, play, shoe...</div>
-        </section>
-
-        <Results results={results} />
-        <Photos photos={photos} />
-      </div>
-    );
-  } else {
-    load();
-    return "Loading";
-  }
+  return (
+    <div className="Dictionary">
+      <form onSubmit={search}>
+        <input type="search" onChange={handleKeywordChange} />
+      </form>
+      <Results results={results} />
+    </div>
+  );
 }
